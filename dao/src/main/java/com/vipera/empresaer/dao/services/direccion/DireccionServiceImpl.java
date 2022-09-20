@@ -1,9 +1,7 @@
 package com.vipera.empresaer.dao.services.direccion;
 
-import com.vipera.empresaer.dao.models.Cliente;
 import com.vipera.empresaer.dao.models.Direccion;
 import com.vipera.empresaer.dao.repositories.DireccionRepository;
-import com.vipera.empresaer.dao.services.categoria.CategoriaServiceImpl;
 import com.vipera.empresaer.dao.utils.LogUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +32,12 @@ public class DireccionServiceImpl implements DireccionService {
 
     @Override
     public Optional<Direccion> findById(Long id) {
-        return repository.findById(id);
+        LOGGER.info(LogUtils.daoMarker, "DAO -   CategoriaServiceImpl   - INPUT - findById - Searching by id");
+
+        Optional<Direccion> optionalDireccion = repository.findById(id);
+
+        LOGGER.info(LogUtils.daoMarker, "DAO -   CategoriaServiceImpl   - OUTPUT - findById - Returning by id");
+        return optionalDireccion;
     }
 
     @Override

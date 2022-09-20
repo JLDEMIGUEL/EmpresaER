@@ -1,9 +1,7 @@
 package com.vipera.empresaer.dao.services.cliente;
 
-import com.vipera.empresaer.dao.models.Categoria;
 import com.vipera.empresaer.dao.models.Cliente;
 import com.vipera.empresaer.dao.repositories.ClienteRepository;
-import com.vipera.empresaer.dao.services.categoria.CategoriaServiceImpl;
 import com.vipera.empresaer.dao.utils.LogUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +32,12 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Optional<Cliente> findById(Long id) {
-        return repository.findById(id);
+        LOGGER.info(LogUtils.daoMarker, "DAO -   CategoriaServiceImpl   - INPUT - findById - Searching by id");
+
+        Optional<Cliente> optionalCliente = repository.findById(id);
+
+        LOGGER.info(LogUtils.daoMarker, "DAO -   CategoriaServiceImpl   - OUTPUT - findById - Returning by id");
+        return optionalCliente;
     }
 
     @Override
@@ -59,10 +62,10 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Optional<List<Object[]>> findHistorial(Long id) {
+    public List<Object[]> findHistorial(Long id) {
         LOGGER.info(LogUtils.daoMarker, "DAO -   ClienteServiceImpl   - INPUT - findHistorial - Searching clients record");
 
-        Optional<List<Object[]>> optionalObjects = repository.findHistorial(id);
+        List<Object[]> optionalObjects = repository.findHistorial(id);
 
         LOGGER.info(LogUtils.daoMarker, "DAO -   ClienteServiceImpl   - OUTPUT - findHistorial - Returning clients record");
 
@@ -70,11 +73,11 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Optional<List<Object[]>> findMediaGastos() {
+    public List<Object[]> findMediaGastos() {
 
         LOGGER.info(LogUtils.daoMarker, "DAO -   ClienteServiceImpl   - INPUT - findMediaGastos - Searching clients waste average");
 
-        Optional<List<Object[]>> optionalObjects = repository.findMediaGastos();
+        List<Object[]> optionalObjects = repository.findMediaGastos();
 
         LOGGER.info(LogUtils.daoMarker, "DAO -   ClienteServiceImpl   - OUTPUT - findMediaGastos - Returning clients waste average");
 

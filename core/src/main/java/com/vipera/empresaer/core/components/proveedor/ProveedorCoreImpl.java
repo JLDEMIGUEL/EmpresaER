@@ -1,14 +1,14 @@
 package com.vipera.empresaer.core.components.proveedor;
 
-import com.vipera.empresaer.core.components.venta.VentaCoreImpl;
+import com.vipera.empresaer.core.exceptions.types.RestException;
 import com.vipera.empresaer.core.utils.LogUtils;
-import com.vipera.empresaer.dao.models.Cliente;
 import com.vipera.empresaer.dao.models.Proveedor;
 import com.vipera.empresaer.dao.services.direccion.DireccionService;
 import com.vipera.empresaer.dao.services.proveedor.ProveedorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -41,7 +41,13 @@ public class ProveedorCoreImpl implements ProveedorCore {
 
     @Override
     public Proveedor findById(Long id) {
-        return service.findById(id).orElse(null);
+
+        LOGGER.info(LogUtils.coreMarker, "CORE -   ProveedorCoreImpl   - INPUT - findById - Searching by id");
+
+        Proveedor proveedor = service.findById(id).orElseThrow(() -> new RestException("1", "Proveedor by Id not founded", HttpStatus.NOT_FOUND));
+
+        LOGGER.info(LogUtils.coreMarker, "CORE -   ProveedorCoreImpl   - OUTPUT - findById - Returning by id");
+        return proveedor;
     }
 
     @Override
@@ -78,11 +84,10 @@ public class ProveedorCoreImpl implements ProveedorCore {
 
         List all = new ArrayList();
 
-        List<Object[]> objectList = service.findAllByIngresos().orElse(null);
+        List<Object[]> objectList = service.findAllByIngresos();
 
-        if(objectList == null){
-            LOGGER.error(LogUtils.coreMarker, "CORE -   ProveedorCoreImpl  - findAllByIngresos - Error database output");
-            return null;
+        if(objectList.isEmpty()){
+            throw new RestException("6","Ingresos not founded", HttpStatus.NOT_FOUND);
         }
 
         objectList.forEach(objects -> {

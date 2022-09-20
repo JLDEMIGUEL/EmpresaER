@@ -1,5 +1,6 @@
 package com.vipera.empresaer.core.components.producto;
 
+import com.vipera.empresaer.core.exceptions.types.RestException;
 import com.vipera.empresaer.core.utils.LogUtils;
 import com.vipera.empresaer.dao.models.Producto;
 import com.vipera.empresaer.dao.services.categoria.CategoriaService;
@@ -8,6 +9,7 @@ import com.vipera.empresaer.dao.services.proveedor.ProveedorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -40,7 +42,13 @@ public class ProductoCoreImpl implements ProductoCore {
 
     @Override
     public Producto findById(Long id) {
-        return service.findById(id).orElse(null);
+
+        LOGGER.info(LogUtils.coreMarker, "CORE -   ProductoCoreImpl   - INPUT - findById - Searching by id");
+
+        Producto producto = service.findById(id).orElseThrow(() -> new RestException("1", "Producto by Id not founded", HttpStatus.NOT_FOUND));
+
+        LOGGER.info(LogUtils.coreMarker, "CORE -   ProductoCoreImpl   - OUTPUT - findById - Returning by id");
+        return producto;
     }
 
     @Override
@@ -74,13 +82,12 @@ public class ProductoCoreImpl implements ProductoCore {
     }
 
     @Override
-    public List<Producto> findAllByCategoriaId(String categoriaId) {
+    public List<Producto> findAllByCategoriaId(Long categoriaId) {
         LOGGER.info(LogUtils.coreMarker, "CORE -   ProductoCoreImpl   - INPUT - findAllByCategoriaId - Searching all products of category :"+categoriaId);
 
-        List<Producto> productoList = service.findAllByCategoriaId(Long.valueOf(categoriaId)).orElse(null);
-        if(productoList == null){
-            LOGGER.error(LogUtils.coreMarker, "CORE -   ProductoCoreImpl  - findAllByCategoriaId - Error database output");
-            return null;
+        List<Producto> productoList = service.findAllByCategoriaId(Long.valueOf(categoriaId));
+        if(productoList.isEmpty()){
+            throw new RestException("4","Productos by Categoria Id not founded", HttpStatus.PRECONDITION_FAILED);
         }
         LOGGER.info(LogUtils.coreMarker, "CORE -   ProductoCoreImpl   - OUTPUT - findAllByCategoriaId - Returning products of category :"+categoriaId);
         return productoList;
@@ -92,10 +99,10 @@ public class ProductoCoreImpl implements ProductoCore {
 
         List all= new ArrayList<>();
 
-        List<Object[]> list = service.findAllPreciosComparison().orElse(null);
-        if(list == null){
-            LOGGER.error(LogUtils.coreMarker, "CORE -   ProductoCoreImpl  - findAllPreciosComparison - Error database output");
-            return null;
+        List<Object[]> list = service.findAllPreciosComparison();
+
+        if(list.isEmpty()){
+            throw new RestException("5","Comparison not founded", HttpStatus.NOT_FOUND);
         }
 
         list.forEach(o -> {

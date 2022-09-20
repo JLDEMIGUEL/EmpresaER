@@ -2,6 +2,8 @@ package com.vipera.empresaer.rest.controllers;
 
 
 import com.vipera.empresaer.core.components.ventaproducto.VentaProductoCore;
+import com.vipera.empresaer.core.exceptions.ExceptionService;
+import com.vipera.empresaer.core.exceptions.types.RestException;
 import com.vipera.empresaer.dao.models.VentaProducto;
 import com.vipera.empresaer.rest.models.VentaProductoModel;
 import com.vipera.empresaer.rest.utils.LogUtils;
@@ -24,28 +26,53 @@ public class VentaProductoController {
 
     @GetMapping("/ventaproducto/all")
     public ResponseEntity findAll(){
-        LOGGER.info(LogUtils.restMarker, "REST -   VentaProductoController   - INPUT - findAll - Searching all");
 
-        List all = core.findAll();
+        try{
+            LOGGER.info(LogUtils.restMarker, "REST -   VentaProductoController   - INPUT - findAll - Searching all");
 
-        LOGGER.info(LogUtils.restMarker, "REST -   VentaProductoController   - OUTPUT - findAll - Returning all");
-        return new ResponseEntity<>(all,HttpStatus.OK);
+            List all = core.findAll();
+
+            LOGGER.info(LogUtils.restMarker, "REST -   VentaProductoController   - OUTPUT - findAll - Returning all");
+            return new ResponseEntity<>(all,HttpStatus.OK);
+        }catch (RestException exception){
+            return new ExceptionService().handleRestException(exception);
+        }
+    }
+
+    @GetMapping("/ventaproducto/{id}")
+    public ResponseEntity findById(@PathVariable Long id){
+
+        try{
+            LOGGER.info(LogUtils.restMarker, "REST -   VentaProductoController   - INPUT - findById - Searching by id");
+
+            VentaProducto ventaProducto = core.findById(id);
+
+            LOGGER.info(LogUtils.restMarker, "REST -   VentaProductoController   - OUTPUT - findById - Returning ventaProducto by id");
+            return new ResponseEntity<>(ventaProducto,HttpStatus.OK);
+        }catch (RestException exception){
+            return new ExceptionService().handleRestException(exception);
+        }
     }
     @PostMapping("/ventaproducto/save")
     public ResponseEntity save(@RequestBody VentaProductoModel model){
-        VentaProducto ventaProducto = new VentaProducto();
 
-        BeanUtils.copyProperties(model,ventaProducto);
+        try{
+            VentaProducto ventaProducto = new VentaProducto();
 
-        LOGGER.info(LogUtils.restMarker, "REST -   VentaProductoController   - INPUT - save - Saving ventaProducto");
+            BeanUtils.copyProperties(model,ventaProducto);
 
-        VentaProducto t = core.save(ventaProducto);
+            LOGGER.info(LogUtils.restMarker, "REST -   VentaProductoController   - INPUT - save - Saving ventaProducto");
 
-        if (t == null)
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            VentaProducto t = core.save(ventaProducto);
 
-        LOGGER.info(LogUtils.restMarker, "REST -   VentaProductoController   - OUTPUT - save - Returning saved ventaProducto");
+            if (t == null)
+                return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
 
-        return new ResponseEntity(t,HttpStatus.OK);
+            LOGGER.info(LogUtils.restMarker, "REST -   VentaProductoController   - OUTPUT - save - Returning saved ventaProducto");
+
+            return new ResponseEntity(t,HttpStatus.OK);
+        }catch (RestException exception){
+            return new ExceptionService().handleRestException(exception);
+        }
     }
 }

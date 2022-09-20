@@ -1,9 +1,7 @@
 package com.vipera.empresaer.dao.services.ventaproducto;
 
-import com.vipera.empresaer.dao.models.Cliente;
 import com.vipera.empresaer.dao.models.VentaProducto;
 import com.vipera.empresaer.dao.repositories.VentaProductoRepository;
-import com.vipera.empresaer.dao.services.categoria.CategoriaServiceImpl;
 import com.vipera.empresaer.dao.utils.LogUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +32,13 @@ public class VentaProductoServiceImpl implements VentaProductoService {
 
     @Override
     public Optional<VentaProducto> findById(Long id) {
-        return repository.findById(id);
+        LOGGER.info(LogUtils.daoMarker, "DAO -   CategoriaServiceImpl   - INPUT - findById - Searching by id");
+
+        Optional<VentaProducto> optionalVentaProducto = repository.findById(id);
+
+        LOGGER.info(LogUtils.daoMarker, "DAO -   CategoriaServiceImpl   - OUTPUT - findById - Returning by id");
+
+        return optionalVentaProducto;
     }
 
     @Override

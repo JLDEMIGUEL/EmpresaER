@@ -1,17 +1,20 @@
 package com.vipera.empresaer.core.components.cliente;
 
-import com.vipera.empresaer.core.components.direccion.DireccionCoreImpl;
+import com.vipera.empresaer.core.exceptions.types.RestException;
 import com.vipera.empresaer.core.utils.LogUtils;
-import com.vipera.empresaer.dao.models.Categoria;
 import com.vipera.empresaer.dao.models.Cliente;
 import com.vipera.empresaer.dao.services.cliente.ClienteService;
 import com.vipera.empresaer.dao.services.direccion.DireccionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class ClienteCoreImpl implements ClienteCore {
@@ -37,7 +40,13 @@ public class ClienteCoreImpl implements ClienteCore {
 
     @Override
     public Cliente findById(Long id) {
-        return service.findById(id).orElse(null);
+        LOGGER.info(LogUtils.coreMarker, "CORE -   ClienteCoreImpl   - INPUT - findById - Searching by id");
+
+        Cliente cliente = service.findById(id).orElseThrow(() -> new RestException("1", "Cliente by Id not founded", HttpStatus.NOT_FOUND));
+
+        LOGGER.info(LogUtils.coreMarker, "CORE -   ClienteCoreImpl   - OUTPUT - findById - Returning by id");
+
+        return cliente;
     }
 
     @Override
@@ -72,11 +81,10 @@ public class ClienteCoreImpl implements ClienteCore {
 
         List list = new ArrayList();
 
-        List<Object[]> objects = service.findHistorial(id).orElse(null);
+        List<Object[]> objects = service.findHistorial(id);
 
-        if(objects==null){
-            LOGGER.error(com.vipera.empresaer.dao.utils.LogUtils.daoMarker, "CORE -   ClienteCoreImpl   - findHistorial - Error with database output");
-            return null;
+        if(objects.isEmpty()){
+            throw new RestException("2","Historial by Id not founded", HttpStatus.NOT_FOUND);
         }
 
         objects.forEach(object -> {
@@ -99,11 +107,10 @@ public class ClienteCoreImpl implements ClienteCore {
 
         List list = new ArrayList();
 
-        List<Object[]> objects = service.findMediaGastos().orElse(null);
+        List<Object[]> objects = service.findMediaGastos();
 
-        if(objects==null){
-            LOGGER.error(com.vipera.empresaer.dao.utils.LogUtils.daoMarker, "CORE -   ClienteCoreImpl   - findMediaGastos - Error with database output");
-            return null;
+        if(objects.isEmpty()){
+            throw new RestException("2","Historial by Id not founded", HttpStatus.NOT_FOUND);
         }
 
         objects.forEach(object -> {

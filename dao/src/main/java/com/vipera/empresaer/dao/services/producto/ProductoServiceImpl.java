@@ -1,6 +1,5 @@
 package com.vipera.empresaer.dao.services.producto;
 
-import com.vipera.empresaer.dao.models.Categoria;
 import com.vipera.empresaer.dao.models.Producto;
 import com.vipera.empresaer.dao.repositories.ProductoRepository;
 import com.vipera.empresaer.dao.utils.LogUtils;
@@ -33,7 +32,12 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public Optional<Producto> findById(Long id) {
-        return repository.findById(id);
+        LOGGER.info(LogUtils.daoMarker, "DAO -   CategoriaServiceImpl   - INPUT - findById - Searching by id");
+
+        Optional<Producto> optionalProducto = repository.findById(id);
+
+        LOGGER.info(LogUtils.daoMarker, "DAO -   CategoriaServiceImpl   - OUTPUT - findById - Returning by id");
+        return optionalProducto;
     }
 
     @Override
@@ -59,11 +63,11 @@ public class ProductoServiceImpl implements ProductoService {
 
 
     @Override
-    public Optional<List<Producto>> findAllByCategoriaId(Long categoriaId) {
+    public List<Producto> findAllByCategoriaId(Long categoriaId) {
 
         LOGGER.info(LogUtils.daoMarker, "DAO -   ProductoServiceImpl   - INPUT - findAllByCategoriaId - Searching all products of category :"+categoriaId);
 
-        Optional<List<Producto>> optionalProductos = repository.findAllByCategoriaId(categoriaId);
+        List<Producto> optionalProductos = repository.findAllByCategoriaId(categoriaId);
 
         LOGGER.info(LogUtils.daoMarker, "DAO -   ProductoServiceImpl   - OUTPUT - findAllByCategoriaId - Returning products of category :"+categoriaId);
 
@@ -71,10 +75,10 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
-    public Optional<List<Object[]>> findAllPreciosComparison() {
+    public List<Object[]> findAllPreciosComparison() {
         LOGGER.info(LogUtils.daoMarker, "DAO -   ProductoServiceImpl   - INPUT - findAllPreciosComparison - Searching prices comparison");
 
-        Optional<List<Object[]>> optionalProductos = repository.findAllPreciosComparison();
+        List<Object[]> optionalProductos = repository.findAllPreciosComparison();
 
         LOGGER.info(LogUtils.daoMarker, "DAO -   ProductoServiceImpl   - OUTPUT - findAllPreciosComparison - Returning prices comparison");
 

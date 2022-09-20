@@ -1,6 +1,8 @@
 package com.vipera.empresaer.rest.controllers;
 
 import com.vipera.empresaer.core.components.producto.ProductoCore;
+import com.vipera.empresaer.core.exceptions.ExceptionService;
+import com.vipera.empresaer.core.exceptions.types.RestException;
 import com.vipera.empresaer.dao.models.Producto;
 import com.vipera.empresaer.rest.models.ProductoModel;
 import com.vipera.empresaer.rest.utils.LogUtils;
@@ -25,57 +27,94 @@ public class ProductoController {
 
     @GetMapping("/producto/all")
     public ResponseEntity findAll(){
-        LOGGER.info(LogUtils.restMarker, "REST -   ProductoController   - INPUT - findAll - Searching all");
 
-        List all = core.findAll();
+        try{
+            LOGGER.info(LogUtils.restMarker, "REST -   ProductoController   - INPUT - findAll - Searching all");
 
-        LOGGER.info(LogUtils.restMarker, "REST -   ProductoController   - OUTPUT - findAll - Returning all");
-        return new ResponseEntity<>(all,HttpStatus.OK);
+            List all = core.findAll();
+
+            LOGGER.info(LogUtils.restMarker, "REST -   ProductoController   - OUTPUT - findAll - Returning all");
+            return new ResponseEntity<>(all,HttpStatus.OK);
+        }catch (RestException exception){
+            return new ExceptionService().handleRestException(exception);
+        }
     }
 
     @GetMapping("/producto/all/categoria/{categoriaId}")
-    public ResponseEntity findAllByCategoriaId(@PathVariable String categoriaId){
-        LOGGER.info(LogUtils.restMarker, "REST -   ProductoController   - INPUT - findAllByCategoriaId - Searching all products of category :"+categoriaId);
+    public ResponseEntity findAllByCategoriaId(@PathVariable Long categoriaId){
 
-        List all = core.findAllByCategoriaId(categoriaId);
+        try{
+            LOGGER.info(LogUtils.restMarker, "REST -   ProductoController   - INPUT - findAllByCategoriaId - Searching all products of category :"+categoriaId);
 
-        if(all == null){
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            List all = core.findAllByCategoriaId(categoriaId);
+
+            if(all == null){
+                return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            }
+
+            LOGGER.info(LogUtils.restMarker, "REST -   ProductoController   - OUTPUT - findAllByCategoriaId - Returning products of category :"+categoriaId);
+            return new ResponseEntity<>(all,HttpStatus.OK);
+        }catch (RestException exception){
+            return new ExceptionService().handleRestException(exception);
         }
-
-        LOGGER.info(LogUtils.restMarker, "REST -   ProductoController   - OUTPUT - findAllByCategoriaId - Returning products of category :"+categoriaId);
-        return new ResponseEntity<>(all,HttpStatus.OK);
     }
 
     @GetMapping("/producto/all/precios")
     public ResponseEntity findAllPreciosComparison(){
-        LOGGER.info(LogUtils.restMarker, "REST -   ProductoController   - INPUT - findAllPreciosComparison - Searching prices comparison");
 
-        List<Map<String, Object>> all = core.findAllPreciosComparison();
+        try{
+            LOGGER.info(LogUtils.restMarker, "REST -   ProductoController   - INPUT - findAllPreciosComparison - Searching prices comparison");
 
-        if(all == null){
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            List<Map<String, Object>> all = core.findAllPreciosComparison();
+
+            if(all == null){
+                return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            }
+
+            LOGGER.info(LogUtils.restMarker, "REST -   ProductoController   - OUTPUT - findAllPreciosComparison - Returning prices comparison");
+            return new ResponseEntity<>(all,HttpStatus.OK);
+
+        }catch (RestException exception){
+            return new ExceptionService().handleRestException(exception);
         }
-
-        LOGGER.info(LogUtils.restMarker, "REST -   ProductoController   - OUTPUT - findAllPreciosComparison - Returning prices comparison");
-        return new ResponseEntity<>(all,HttpStatus.OK);
     }
+
+    @GetMapping("/producto/{id}")
+    public ResponseEntity findById(@PathVariable Long id){
+
+        try{
+            LOGGER.info(LogUtils.restMarker, "REST -   ProductoController   - INPUT - findById - Searching by id");
+
+            Producto producto = core.findById(id);
+
+            LOGGER.info(LogUtils.restMarker, "REST -   ProductoController   - OUTPUT - findById - Returning producto by id");
+            return new ResponseEntity<>(producto,HttpStatus.OK);
+        }catch (RestException exception){
+            return new ExceptionService().handleRestException(exception);
+        }
+    }
+
 
     @PostMapping("/producto/save")
     public ResponseEntity save(@RequestBody ProductoModel model){
-        Producto producto = new Producto();
 
-        BeanUtils.copyProperties(model,producto);
+        try{
+            Producto producto = new Producto();
 
-        LOGGER.info(LogUtils.restMarker, "REST -   ProductoController   - INPUT - save - Saving producto");
-        Producto t = core.save(producto);
+            BeanUtils.copyProperties(model,producto);
 
-        if (t == null)
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            LOGGER.info(LogUtils.restMarker, "REST -   ProductoController   - INPUT - save - Saving producto");
+            Producto t = core.save(producto);
 
-        LOGGER.info(LogUtils.restMarker, "REST -   ProductoController   - OUTPUT - save - Returning saved producto");
+            if (t == null)
+                return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
 
-        return new ResponseEntity(t,HttpStatus.OK);
+            LOGGER.info(LogUtils.restMarker, "REST -   ProductoController   - OUTPUT - save - Returning saved producto");
+
+            return new ResponseEntity(t,HttpStatus.OK);
+        }catch (RestException exception){
+            return new ExceptionService().handleRestException(exception);
+        }
     }
 
 

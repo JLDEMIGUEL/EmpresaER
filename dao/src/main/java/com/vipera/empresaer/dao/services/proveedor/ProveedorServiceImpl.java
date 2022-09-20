@@ -1,10 +1,7 @@
 package com.vipera.empresaer.dao.services.proveedor;
 
-import com.vipera.empresaer.dao.models.Cliente;
-import com.vipera.empresaer.dao.models.Producto;
 import com.vipera.empresaer.dao.models.Proveedor;
 import com.vipera.empresaer.dao.repositories.ProveedorRepository;
-import com.vipera.empresaer.dao.services.categoria.CategoriaServiceImpl;
 import com.vipera.empresaer.dao.utils.LogUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +33,12 @@ public class ProveedorServiceImpl implements ProveedorService {
 
     @Override
     public Optional<Proveedor> findById(Long id) {
-        return repository.findById(id);
+        LOGGER.info(LogUtils.daoMarker, "DAO -   CategoriaServiceImpl   - INPUT - findById - Searching by id");
+
+        Optional<Proveedor> optionalProveedor = repository.findById(id);
+
+        LOGGER.info(LogUtils.daoMarker, "DAO -   CategoriaServiceImpl   - OUTPUT - findById - Returning by id");
+        return optionalProveedor;
     }
 
     @Override
@@ -62,10 +64,10 @@ public class ProveedorServiceImpl implements ProveedorService {
     }
 
     @Override
-    public Optional<List<Object[]>> findAllByIngresos() {
+    public List<Object[]> findAllByIngresos() {
         LOGGER.info(LogUtils.daoMarker, "DAO -   ProveedorServiceImpl   - INPUT - findAllByIngresos - Searching all by Ingresos");
 
-        Optional<List<Object[]>> allByIngresos = repository.findAllByIngresos();
+        List<Object[]> allByIngresos = repository.findAllByIngresos();
 
         LOGGER.info(LogUtils.daoMarker, "DAO -   ProveedorServiceImpl   - OUTPUT - findAllByIngresos - Returning all by Ingresos");
         return allByIngresos;

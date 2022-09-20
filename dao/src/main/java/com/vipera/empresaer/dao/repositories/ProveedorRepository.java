@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ProveedorRepository extends JpaRepository<Proveedor,Long> {
@@ -15,5 +14,5 @@ public interface ProveedorRepository extends JpaRepository<Proveedor,Long> {
             "    INNER JOIN Producto p on vp.producto.id = p.id" +
             "    INNER JOIN Proveedor p2 on p.proveedor.id = p2.id" +
             "    GROUP BY p2.nombre ORDER BY Beneficio DESC")
-    Optional<List<Object[]>> findAllByIngresos();
+    List<Object[]> findAllByIngresos();
 }

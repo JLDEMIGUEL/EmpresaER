@@ -33,7 +33,13 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     @Override
     public Optional<Categoria> findById(Long id) {
-        return repository.findById(id);
+
+        LOGGER.info(LogUtils.daoMarker, "DAO -   CategoriaServiceImpl   - INPUT - findById - Searching by id");
+
+        Optional<Categoria> optionalCategoria = repository.findById(id);
+
+        LOGGER.info(LogUtils.daoMarker, "DAO -   CategoriaServiceImpl   - OUTPUT - findById - Returning by id");
+        return optionalCategoria;
     }
 
     @Override

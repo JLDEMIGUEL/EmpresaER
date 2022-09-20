@@ -1,14 +1,14 @@
 package com.vipera.empresaer.core.components.venta;
 
-import com.vipera.empresaer.core.components.ventaproducto.VentaProductoCoreImpl;
+import com.vipera.empresaer.core.exceptions.types.RestException;
 import com.vipera.empresaer.core.utils.LogUtils;
-import com.vipera.empresaer.dao.models.Cliente;
 import com.vipera.empresaer.dao.models.Venta;
 import com.vipera.empresaer.dao.services.cliente.ClienteService;
 import com.vipera.empresaer.dao.services.venta.VentaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -38,7 +38,14 @@ public class VentaCoreImpl implements VentaCore {
 
     @Override
     public Venta findById(Long id) {
-        return service.findById(id).orElse(null);
+
+        LOGGER.info(LogUtils.coreMarker, "CORE -   VentaCoreImpl   - INPUT - findById - Searching by id");
+
+        Venta venta = service.findById(id).orElseThrow(() -> new RestException("1", "Venta by Id not founded", HttpStatus.NOT_FOUND));
+
+
+        LOGGER.info(LogUtils.coreMarker, "CORE -   VentaCoreImpl   - OUTPUT - findById - Returning by id");
+        return venta;
     }
 
     @Override

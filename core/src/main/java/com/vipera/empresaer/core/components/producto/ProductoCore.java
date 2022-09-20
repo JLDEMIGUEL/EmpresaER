@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface ProductoCore extends BaseCore<Producto> {
 
-    List<Producto> findAllByCategoriaId(String categoriaId);
+    List<Producto> findAllByCategoriaId(Long categoriaId);
 
 
     List<Map<String, Object>> findAllPreciosComparison();

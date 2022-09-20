@@ -2,8 +2,9 @@ package com.vipera.empresaer.rest.controllers;
 
 
 import com.vipera.empresaer.core.components.cliente.ClienteCore;
+import com.vipera.empresaer.core.exceptions.ExceptionService;
+import com.vipera.empresaer.core.exceptions.types.RestException;
 import com.vipera.empresaer.dao.models.Cliente;
-import com.vipera.empresaer.dao.models.Direccion;
 import com.vipera.empresaer.rest.models.ClienteModel;
 import com.vipera.empresaer.rest.utils.LogUtils;
 import org.slf4j.Logger;
@@ -54,29 +55,53 @@ public class ClienteController {
 
     @GetMapping("/cliente/historial/{id}")
     public ResponseEntity findHistorial(@PathVariable Long id){
-        LOGGER.info(LogUtils.restMarker, "REST -   ClienteController   - INPUT - findHistorial - Searching clients record");
 
-        List<Map<String, Object>> mapList = core.findHistorial(id);
+        try{
+            LOGGER.info(LogUtils.restMarker, "REST -   ClienteController   - INPUT - findHistorial - Searching clients record");
 
-        if (mapList == null)
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
-        LOGGER.info(LogUtils.restMarker, "REST -   ClienteController   - OUTPUT - findHistorial - Returning clients record");
+            List<Map<String, Object>> mapList = core.findHistorial(id);
 
-        return new ResponseEntity(mapList,HttpStatus.OK);
+            if (mapList == null)
+                return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            LOGGER.info(LogUtils.restMarker, "REST -   ClienteController   - OUTPUT - findHistorial - Returning clients record");
+
+            return new ResponseEntity(mapList,HttpStatus.OK);
+        }catch (RestException exception){
+            return new ExceptionService().handleRestException(exception);
+        }
+    }
+
+    @GetMapping("/cliente/{id}")
+    public ResponseEntity findById(@PathVariable Long id){
+
+        try{
+            LOGGER.info(LogUtils.restMarker, "REST -   ClienteController   - INPUT - findById - Searching by id");
+
+            Cliente cliente = core.findById(id);
+
+            LOGGER.info(LogUtils.restMarker, "REST -   ClienteController   - OUTPUT - findById - Returning cliente by id");
+            return new ResponseEntity<>(cliente,HttpStatus.OK);
+        }catch (RestException exception){
+            return new ExceptionService().handleRestException(exception);
+        }
     }
 
     @GetMapping("/cliente/all/gastos")
     public ResponseEntity findMediaGastos(){
 
+        try{
+            LOGGER.info(LogUtils.restMarker, "REST -   ClienteController   - INPUT - findMediaGastos - Searching clients waste average");
 
-        LOGGER.info(LogUtils.restMarker, "REST -   ClienteController   - INPUT - findMediaGastos - Searching clients waste average");
+            List<Map<String, Object>> mapList = core.findMediaGastos();
 
-        List<Map<String, Object>> mapList = core.findMediaGastos();
+            if (mapList == null)
+                return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            LOGGER.info(LogUtils.restMarker, "REST -   ClienteController   - OUTPUT - findMediaGastos - Returning clients waste average");
 
-        if (mapList == null)
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
-        LOGGER.info(LogUtils.restMarker, "REST -   ClienteController   - OUTPUT - findMediaGastos - Returning clients waste average");
+            return new ResponseEntity(mapList,HttpStatus.OK);
+        }catch (RestException exception){
+            return new ExceptionService().handleRestException(exception);
+        }
 
-        return new ResponseEntity(mapList,HttpStatus.OK);
     }
 }

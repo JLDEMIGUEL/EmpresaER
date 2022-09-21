@@ -1,6 +1,6 @@
-package com.vipera.empresaer.rest.models;
+package com.vipera.empresaer.rest.requests;
 
-public class DireccionModel {
+public class DireccionRequest {
 
     private Long id;
 

@@ -1,4 +1,4 @@
-package com.vipera.empresaer.rest.models;
+package com.vipera.empresaer.rest.requests;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.vipera.empresaer.dao.models.Cliente;
@@ -7,7 +7,7 @@ import com.vipera.empresaer.dao.models.VentaProducto;
 import java.util.Date;
 import java.util.Set;
 
-public class VentaModel {
+public class VentaRequest {
 
     private Long id;
 

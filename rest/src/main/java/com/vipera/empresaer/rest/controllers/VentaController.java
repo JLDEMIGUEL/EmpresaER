@@ -4,16 +4,19 @@ import com.vipera.empresaer.core.components.venta.VentaCore;
 import com.vipera.empresaer.core.exceptions.ExceptionService;
 import com.vipera.empresaer.core.exceptions.types.RestException;
 import com.vipera.empresaer.dao.models.Venta;
-import com.vipera.empresaer.rest.models.VentaModel;
+import com.vipera.empresaer.rest.converters.venta.VentaRequestToVentaConverter;
+import com.vipera.empresaer.rest.converters.venta.VentaToVentaResponseConverter;
+import com.vipera.empresaer.rest.requests.VentaRequest;
+import com.vipera.empresaer.rest.responses.venta.VentaResponse;
 import com.vipera.empresaer.rest.utils.LogUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,11 +33,15 @@ public class VentaController {
         try{
             LOGGER.info(LogUtils.restMarker, "REST -   VentaController   - INPUT - findAll - Searching all");
 
-            List all = core.findAll();
+            List<Venta> all = core.findAll();
 
             LOGGER.info(LogUtils.restMarker, "REST -   VentaController   - OUTPUT - findAll - Returning all");
-            return new ResponseEntity<>(all,HttpStatus.OK);
 
+            List allResponse = new ArrayList<>();
+            all.forEach(venta -> {
+                allResponse.add(new VentaToVentaResponseConverter().convert(venta));
+            });
+            return new ResponseEntity<>(allResponse,HttpStatus.OK);
         }catch (RestException exception){
             return new ExceptionService().handleRestException(exception);
         }
@@ -49,29 +56,32 @@ public class VentaController {
             Venta venta = core.findById(id);
 
             LOGGER.info(LogUtils.restMarker, "REST -   VentaController   - OUTPUT - findById - Returning venta by id");
-            return new ResponseEntity<>(venta,HttpStatus.OK);
+
+            VentaResponse ventaResponse = new VentaToVentaResponseConverter().convert(venta);
+
+            return new ResponseEntity<>(ventaResponse,HttpStatus.OK);
         }catch (RestException exception){
             return new ExceptionService().handleRestException(exception);
         }
     }
 
     @PostMapping("/venta/save")
-    public ResponseEntity save(@RequestBody VentaModel model){
+    public ResponseEntity save(@RequestBody VentaRequest model){
 
         try{
-            Venta venta = new Venta();
-
-            BeanUtils.copyProperties(model,venta);
+            Venta venta = new VentaRequestToVentaConverter().convert(model);
 
             LOGGER.info(LogUtils.restMarker, "REST -   VentaController   - INPUT - save - Saving venta");
-            Venta t = core.save(venta);
+            Venta ventaSaved = core.save(venta);
 
-            if (t == null)
+            if (ventaSaved == null)
                 return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
 
             LOGGER.info(LogUtils.restMarker, "REST -   VentaController   - OUTPUT - save - Returning saved venta");
 
-            return new ResponseEntity(t,HttpStatus.OK);
+            VentaResponse ventaResponse = new VentaToVentaResponseConverter().convert(ventaSaved);
+
+            return new ResponseEntity(ventaResponse,HttpStatus.OK);
         }catch (RestException exception){
             return new ExceptionService().handleRestException(exception);
         }

@@ -77,7 +77,7 @@ public class ClienteCoreImpl implements ClienteCore {
     @Override
     public List<Map <String, Object>> findHistorial(Long id) {
 
-        LOGGER.info(com.vipera.empresaer.dao.utils.LogUtils.daoMarker, "CORE -   ClienteCoreImpl   - INPUT - findHistorial - Searching clients record");
+        LOGGER.info(LogUtils.coreMarker, "CORE -   ClienteCoreImpl   - INPUT - findHistorial - Searching clients record");
 
         List list = new ArrayList();
 
@@ -96,14 +96,14 @@ public class ClienteCoreImpl implements ClienteCore {
             list.add(map);
         });
 
-        LOGGER.info(com.vipera.empresaer.dao.utils.LogUtils.daoMarker, "CORE -   ClienteCoreImpl   - OUTPUT - findHistorial - Returning clients record");
+        LOGGER.info(LogUtils.coreMarker, "CORE -   ClienteCoreImpl   - OUTPUT - findHistorial - Returning clients record");
 
         return list;
     }
 
     @Override
     public List<Map<String, Object>> findMediaGastos() {
-        LOGGER.info(com.vipera.empresaer.dao.utils.LogUtils.daoMarker, "CORE -   ClienteCoreImpl   - INPUT - findMediaGastos - Searching clients waste average");
+        LOGGER.info(LogUtils.coreMarker, "CORE -   ClienteCoreImpl   - INPUT - findMediaGastos - Searching clients waste average");
 
         List list = new ArrayList();
 
@@ -120,7 +120,7 @@ public class ClienteCoreImpl implements ClienteCore {
             list.add(map);
         });
 
-        LOGGER.info(com.vipera.empresaer.dao.utils.LogUtils.daoMarker, "CORE -   ClienteCoreImpl   - OUTPUT - findMediaGastos - Returning clients waste average");
+        LOGGER.info(LogUtils.coreMarker, "CORE -   ClienteCoreImpl   - OUTPUT - findMediaGastos - Returning clients waste average");
 
 
         return list;

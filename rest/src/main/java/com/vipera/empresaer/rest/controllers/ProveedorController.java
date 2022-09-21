@@ -4,16 +4,21 @@ import com.vipera.empresaer.core.components.proveedor.ProveedorCore;
 import com.vipera.empresaer.core.exceptions.ExceptionService;
 import com.vipera.empresaer.core.exceptions.types.RestException;
 import com.vipera.empresaer.dao.models.Proveedor;
-import com.vipera.empresaer.rest.models.ProveedorModel;
+import com.vipera.empresaer.rest.converters.proveedor.MapToProveedorIngresosConverter;
+import com.vipera.empresaer.rest.converters.proveedor.ProveedorRequestToProveedorConverter;
+import com.vipera.empresaer.rest.converters.proveedor.ProveedorToProveedorResponseConverter;
+import com.vipera.empresaer.rest.requests.ProveedorRequest;
+import com.vipera.empresaer.rest.responses.proveedor.ProveedorIngresosResponse;
+import com.vipera.empresaer.rest.responses.proveedor.ProveedorResponse;
 import com.vipera.empresaer.rest.utils.LogUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,32 +35,37 @@ public class ProveedorController {
         try{
             LOGGER.info(LogUtils.restMarker, "REST -   ProveedorController   - INPUT - findAll - Searching all");
 
-            List all = core.findAll();
+            List<Proveedor> all = core.findAll();
 
             LOGGER.info(LogUtils.restMarker, "REST -   ProveedorController   - OUTPUT - findAll - Returning all");
-            return new ResponseEntity<>(all,HttpStatus.OK);
+
+            List allResponse = new ArrayList<>();
+            all.forEach(proveedor -> {
+                allResponse.add(new ProveedorToProveedorResponseConverter().convert(proveedor));
+            });
+            return new ResponseEntity<>(allResponse,HttpStatus.OK);
         }catch (RestException exception){
             return new ExceptionService().handleRestException(exception);
         }
     }
 
     @PostMapping("/proveedor/save")
-    public ResponseEntity save(@RequestBody ProveedorModel model){
+    public ResponseEntity save(@RequestBody ProveedorRequest model){
 
         try{
-            Proveedor proveedor = new Proveedor();
-
-            BeanUtils.copyProperties(model,proveedor);
+            Proveedor proveedor = new ProveedorRequestToProveedorConverter().convert(model);
 
             LOGGER.info(LogUtils.restMarker, "REST -   ProveedorController   - INPUT - save - Saving proveedor");
-            Proveedor t = core.save(proveedor);
+            Proveedor proveedorSaved = core.save(proveedor);
 
-            if (t == null)
+            if (proveedorSaved == null)
                 return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
 
             LOGGER.info(LogUtils.restMarker, "REST -   ProveedorController   - OUTPUT - save - Returning saved proveedor");
 
-            return new ResponseEntity(t,HttpStatus.OK);
+            ProveedorResponse proveedorResponse = new ProveedorToProveedorResponseConverter().convert(proveedorSaved);
+
+            return new ResponseEntity(proveedorResponse,HttpStatus.OK);
         }catch (RestException exception){
             return new ExceptionService().handleRestException(exception);
         }
@@ -70,7 +80,10 @@ public class ProveedorController {
             Proveedor proveedor = core.findById(id);
 
             LOGGER.info(LogUtils.restMarker, "REST -   ProveedorController   - OUTPUT - findById - Returning proveedor by id");
-            return new ResponseEntity<>(proveedor,HttpStatus.OK);
+
+            ProveedorResponse proveedorResponse = new ProveedorToProveedorResponseConverter().convert(proveedor);
+
+            return new ResponseEntity(proveedorResponse,HttpStatus.OK);
         }catch (RestException exception){
             return new ExceptionService().handleRestException(exception);
         }
@@ -89,7 +102,11 @@ public class ProveedorController {
 
 
             LOGGER.info(LogUtils.restMarker, "REST -   ProveedorController   - OUTPUT - findAllByIngresos - Returning all by Ingresos");
-            return new ResponseEntity(list,HttpStatus.OK);
+
+            List<ProveedorIngresosResponse> responseList = new ArrayList<>();
+            list.forEach(map -> responseList.add(new MapToProveedorIngresosConverter().convert(map)));
+
+            return new ResponseEntity(responseList,HttpStatus.OK);
 
         }catch (RestException exception){
             return new ExceptionService().handleRestException(exception);

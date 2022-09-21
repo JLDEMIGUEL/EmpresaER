@@ -1,11 +1,11 @@
-package com.vipera.empresaer.rest.models;
+package com.vipera.empresaer.rest.requests;
 
 import com.vipera.empresaer.dao.models.Direccion;
 import com.vipera.empresaer.dao.models.Producto;
 
 import java.util.Set;
 
-public class ProveedorModel {
+public class ProveedorRequest {
 
     private Long id;
 

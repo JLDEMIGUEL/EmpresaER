@@ -1,9 +1,9 @@
-package com.vipera.empresaer.rest.models;
+package com.vipera.empresaer.rest.requests;
 
 import com.vipera.empresaer.dao.models.Producto;
 import com.vipera.empresaer.dao.models.Venta;
 
-public class VentaProductoModel {
+public class VentaProductoRequest {
 
     private Long id;
 

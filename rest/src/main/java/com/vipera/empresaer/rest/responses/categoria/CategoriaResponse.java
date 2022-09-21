@@ -1,15 +1,11 @@
-package com.vipera.empresaer.rest.models;
+package com.vipera.empresaer.rest.responses.categoria;
 
-import com.vipera.empresaer.dao.models.Producto;
-
-import java.util.Set;
-
-public class CategoriaModel {
+public class CategoriaResponse {
 
     private Long id;
     private String nombre;
     private String descripcion;
-    private Set<Producto> productos;
+
 
     public Long getId() {
         return id;
@@ -35,11 +31,4 @@ public class CategoriaModel {
         this.descripcion = descripcion;
     }
 
-    public Set<Producto> getProductos() {
-        return productos;
-    }
-
-    public void setProductos(Set<Producto> productos) {
-        this.productos = productos;
-    }
 }

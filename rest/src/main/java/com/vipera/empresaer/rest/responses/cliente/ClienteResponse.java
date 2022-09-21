@@ -1,11 +1,8 @@
-package com.vipera.empresaer.rest.models;
+package com.vipera.empresaer.rest.responses.cliente;
 
 import com.vipera.empresaer.dao.models.Direccion;
-import com.vipera.empresaer.dao.models.Venta;
 
-import java.util.Set;
-
-public class ClienteModel {
+public class ClienteResponse {
 
     private Long id;
 
@@ -15,7 +12,6 @@ public class ClienteModel {
 
     private String telefono;
 
-    private Set<Venta> ventas;
 
     public Long getId() {
         return id;
@@ -49,11 +45,4 @@ public class ClienteModel {
         this.telefono = telefono;
     }
 
-    public Set<Venta> getVentas() {
-        return ventas;
-    }
-
-    public void setVentas(Set<Venta> ventas) {
-        this.ventas = ventas;
-    }
 }

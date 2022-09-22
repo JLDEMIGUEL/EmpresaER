@@ -17,7 +17,7 @@ public class ExceptionService {
 
     @ExceptionHandler(RestException.class)
     public ResponseEntity<TemplateException> handleRestException(RestException exception){
-        LOGGER.info(LogUtils.coreMarker, "CORE - ExceptionService - handleRestException - Exception code: " +
+        LOGGER.error(LogUtils.coreMarker, "CORE - ExceptionService - handleRestException - Exception code: " +
                 exception.getCode() + ", message: " + exception.getMessage() + ", status: " + exception.getStatus());
         TemplateException template = new TemplateException(exception.getCode(), exception.getMessage());
         return new ResponseEntity<>(template, exception.getStatus());

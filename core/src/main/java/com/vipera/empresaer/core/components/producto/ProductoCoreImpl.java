@@ -1,11 +1,13 @@
 package com.vipera.empresaer.core.components.producto;
 
+import com.vipera.empresaer.core.components.categoria.CategoriaCore;
+import com.vipera.empresaer.core.components.proveedor.ProveedorCore;
 import com.vipera.empresaer.core.exceptions.types.RestException;
 import com.vipera.empresaer.core.utils.LogUtils;
+import com.vipera.empresaer.dao.models.Categoria;
 import com.vipera.empresaer.dao.models.Producto;
-import com.vipera.empresaer.dao.services.categoria.CategoriaService;
+import com.vipera.empresaer.dao.models.Proveedor;
 import com.vipera.empresaer.dao.services.producto.ProductoService;
-import com.vipera.empresaer.dao.services.proveedor.ProveedorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +27,9 @@ public class ProductoCoreImpl implements ProductoCore {
     @Autowired
     private ProductoService service;
     @Autowired
-    private ProveedorService proveedorService;
+    private ProveedorCore proveedorCore;
     @Autowired
-    private CategoriaService categoriaService;
+    private CategoriaCore categoriaCore;
 
     @Override
     public List<Producto> findAll() {
@@ -56,19 +58,24 @@ public class ProductoCoreImpl implements ProductoCore {
 
         LOGGER.info(LogUtils.coreMarker, "CORE -   ProductoCoreImpl   - INPUT - save - Saving Producto");
 
-        if(object.getProveedor().isNew()){
-            LOGGER.info(LogUtils.coreMarker, "CORE -   ProductoCoreImpl   - saving new Proveedor");
-            object.setProveedor(proveedorService.save(object.getProveedor()));
-        }
-        if(object.getCategoria().isNew()){
-            LOGGER.info(LogUtils.coreMarker, "CORE -   ProductoCoreImpl   - saving new Categoria");
-            object.setCategoria(categoriaService.save(object.getCategoria()));
-        }
+        Proveedor proveedor; Categoria categoria;
 
-        Producto t = service.save(object);
+        if(object.getProveedor().isNew())
+            proveedor=proveedorCore.save(object.getProveedor());
+        else
+            proveedor=proveedorCore.findById(object.getProveedor().getId());
+
+        if(object.getCategoria().isNew())
+            categoria=categoriaCore.save(object.getCategoria());
+        else
+            categoria=categoriaCore.findById(object.getCategoria().getId());
+
+        object.setCategoria(categoria);object.setProveedor(proveedor);
+        Producto producto = service.save(object);
+
 
         LOGGER.info(LogUtils.coreMarker, "CORE -   ProductoCoreImpl   - OUTPUT - save - Returning saved Producto");
-        return t;
+        return producto;
     }
 
     @Override

@@ -1,10 +1,10 @@
 package com.vipera.empresaer.rest.converters.cliente;
 
 import com.vipera.empresaer.dao.models.Cliente;
+import com.vipera.empresaer.rest.converters.direccion.DireccionRequestToDireccionConverter;
 import com.vipera.empresaer.rest.requests.ClienteRequest;
 import com.vipera.empresaer.rest.utils.LogUtils;
-import com.vipera.empresaer.rest.validators.NumberValidator;
-import com.vipera.empresaer.rest.validators.StringValidator;
+import com.vipera.empresaer.rest.validators.ClienteValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
@@ -18,12 +18,16 @@ public class ClienteRequestToClienteConverter implements Converter<ClienteReques
 
         LOGGER.info(LogUtils.restMarker, "REST -   ClienteRequestToClienteConverter   - INPUT - convert - Converting");
 
-        Cliente cliente = new Cliente();
+        source = new ClienteValidator().validate(source);
 
-        cliente.setId(new NumberValidator().validateLong(source.getId()));
-        cliente.setNombre(new StringValidator().validate(source.getNombre()));
-        cliente.setDireccion(source.getDireccion());//TODO
-        cliente.setTelefono(new StringValidator().validatePhone(source.getTelefono()));
+        Cliente cliente = new Cliente();
+        if(source.getId() != null){
+            cliente.setId(source.getId());
+        }else{
+            cliente.setNombre(source.getNombre());
+            cliente.setDireccion(new DireccionRequestToDireccionConverter().convert(source.getDireccion()));
+            cliente.setTelefono(source.getTelefono());
+        }
 
         LOGGER.info(LogUtils.restMarker, "REST -   ClienteRequestToClienteConverter   - OUTPUT - convert - Converted");
 

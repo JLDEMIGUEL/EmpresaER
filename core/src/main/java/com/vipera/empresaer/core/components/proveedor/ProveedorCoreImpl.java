@@ -1,9 +1,10 @@
 package com.vipera.empresaer.core.components.proveedor;
 
+import com.vipera.empresaer.core.components.direccion.DireccionCore;
 import com.vipera.empresaer.core.exceptions.types.RestException;
 import com.vipera.empresaer.core.utils.LogUtils;
+import com.vipera.empresaer.dao.models.Direccion;
 import com.vipera.empresaer.dao.models.Proveedor;
-import com.vipera.empresaer.dao.services.direccion.DireccionService;
 import com.vipera.empresaer.dao.services.proveedor.ProveedorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ public class ProveedorCoreImpl implements ProveedorCore {
     private ProveedorService service;
 
     @Autowired
-    private DireccionService direccionService;
+    private DireccionCore direccionCore;
 
 
     @Override
@@ -55,10 +56,14 @@ public class ProveedorCoreImpl implements ProveedorCore {
 
         LOGGER.info(LogUtils.coreMarker, "CORE -   ProveedorCoreImpl   - INPUT - save - Saving Proveedor");
 
-        if(object.getDireccion().isNew()){
-            LOGGER.info(LogUtils.coreMarker, "CORE -   ProveedorCoreImpl   - saving new direccion");
-            object.setDireccion(direccionService.save(object.getDireccion()));
-        }
+        Direccion direccion;
+
+        if(object.getDireccion().isNew())
+            direccion = direccionCore.save(object.getDireccion());
+        else
+            direccion = direccionCore.findById(object.getDireccion().getId());
+
+        object.setDireccion(direccion);
 
         Proveedor t = service.save(object);
 
@@ -86,9 +91,9 @@ public class ProveedorCoreImpl implements ProveedorCore {
 
         List<Object[]> objectList = service.findAllByIngresos();
 
-        if(objectList.isEmpty()){
+        if(objectList.isEmpty())
             throw new RestException("6","Ingresos not founded", HttpStatus.NOT_FOUND);
-        }
+
 
         objectList.forEach(objects -> {
             Map map = new HashMap<>();

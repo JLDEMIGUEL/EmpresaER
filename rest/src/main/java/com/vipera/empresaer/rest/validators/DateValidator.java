@@ -23,12 +23,18 @@ public class DateValidator {
             return null;
         }
 
+        if(date.getClass() == Date.class){
+            LOGGER.info(LogUtils.restMarker, "REST -   DateValidator   - OUTPUT - validateDate - Validated");
+            return (Date) date;
+        }
+
         DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 
         Date retDate;
         try {
             retDate = format.parse(date.toString());
         } catch (ParseException e) {
+
             throw new RestException("11", "Unable to parse Date", HttpStatus.BAD_REQUEST);
         }
 

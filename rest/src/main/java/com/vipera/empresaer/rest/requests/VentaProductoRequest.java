@@ -1,15 +1,12 @@
 package com.vipera.empresaer.rest.requests;
 
-import com.vipera.empresaer.dao.models.Producto;
-import com.vipera.empresaer.dao.models.Venta;
-
 public class VentaProductoRequest {
 
     private Long id;
 
-    private Venta venta;
+    private VentaRequest venta;
 
-    private Producto producto;
+    private ProductoRequest producto;
 
     private Integer cantidad;
 
@@ -23,19 +20,19 @@ public class VentaProductoRequest {
         this.id = id;
     }
 
-    public Venta getVenta() {
+    public VentaRequest getVenta() {
         return venta;
     }
 
-    public void setVenta(Venta venta) {
+    public void setVenta(VentaRequest venta) {
         this.venta = venta;
     }
 
-    public Producto getProducto() {
+    public ProductoRequest getProducto() {
         return producto;
     }
 
-    public void setProducto(Producto producto) {
+    public void setProducto(ProductoRequest producto) {
         this.producto = producto;
     }
 

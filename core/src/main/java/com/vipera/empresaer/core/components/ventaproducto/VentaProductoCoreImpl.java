@@ -1,7 +1,11 @@
 package com.vipera.empresaer.core.components.ventaproducto;
 
+import com.vipera.empresaer.core.components.producto.ProductoCore;
+import com.vipera.empresaer.core.components.venta.VentaCore;
 import com.vipera.empresaer.core.exceptions.types.RestException;
 import com.vipera.empresaer.core.utils.LogUtils;
+import com.vipera.empresaer.dao.models.Producto;
+import com.vipera.empresaer.dao.models.Venta;
 import com.vipera.empresaer.dao.models.VentaProducto;
 import com.vipera.empresaer.dao.services.ventaproducto.VentaProductoService;
 import org.slf4j.Logger;
@@ -19,6 +23,12 @@ public class VentaProductoCoreImpl implements VentaProductoCore {
 
     @Autowired
     private VentaProductoService service;
+
+    @Autowired
+    private ProductoCore productoCore;
+
+    @Autowired
+    private VentaCore ventaCore;
 
     @Override
     public List<VentaProducto> findAll() {
@@ -48,20 +58,23 @@ public class VentaProductoCoreImpl implements VentaProductoCore {
 
         LOGGER.info(LogUtils.coreMarker, "CORE -   VentaProductoCoreImpl   - INPUT - save - Saving VentaProducto");
 
+        Producto producto; Venta venta;
 
-        if(object.getProducto().isNew()){
-            LOGGER.error(LogUtils.coreMarker, "CORE -   VentaProductoCoreImpl   - Producto id must exist");
-            return null;
-        }
-        if(object.getVenta().isNew()){
-            LOGGER.error(LogUtils.coreMarker, "CORE -   VentaProductoCoreImpl   - Venta id must exist");
-            return null;
-        }
+        if(object.getProducto().isNew())
+            producto = productoCore.save(object.getProducto());
+        else
+            producto = productoCore.findById(object.getProducto().getId());
 
-        VentaProducto t = service.save(object);
+        if(object.getVenta().isNew())
+            venta = ventaCore.save(object.getVenta());
+        else
+            venta = ventaCore.findById(object.getVenta().getId());
+
+        object.setProducto(producto); object.setVenta(venta);
+        VentaProducto ventaProducto = service.save(object);
 
         LOGGER.info(LogUtils.coreMarker, "CORE -   VentaProductoCoreImpl   - OUTPUT - save - Returning saved VentaProducto");
-        return t;
+        return ventaProducto;
     }
 
     @Override

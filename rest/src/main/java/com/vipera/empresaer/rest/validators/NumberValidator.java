@@ -64,4 +64,25 @@ public class NumberValidator {
 
         return (Integer) number;
     }
+
+    public <T> T validate(T number) {
+        LOGGER.info(LogUtils.restMarker, "REST -   NumberValidator   - INPUT - validate - Validating");
+
+        if(number == null){
+            LOGGER.info(LogUtils.restMarker, "REST -   NumberValidator   - OUTPUT - validate - Validated");
+            return null;
+        }
+
+        if(number.getClass() == Integer.class && (Integer)number<0){
+            throw new RestException("10","Must be a positive value", HttpStatus.BAD_REQUEST);
+        }else if(number.getClass() == Double.class && (Double)number<0){
+            throw new RestException("10","Must be a positive value", HttpStatus.BAD_REQUEST);
+        }else if(number.getClass() == Long.class && (Long)number<0){
+            throw new RestException("10","Must be a positive value", HttpStatus.BAD_REQUEST);
+        }
+
+        LOGGER.info(LogUtils.restMarker, "REST -   NumberValidator   - OUTPUT - validate - Validated");
+
+        return number;
+    }
 }

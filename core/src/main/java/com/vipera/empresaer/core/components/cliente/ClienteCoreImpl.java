@@ -1,10 +1,11 @@
 package com.vipera.empresaer.core.components.cliente;
 
+import com.vipera.empresaer.core.components.direccion.DireccionCore;
 import com.vipera.empresaer.core.exceptions.types.RestException;
 import com.vipera.empresaer.core.utils.LogUtils;
 import com.vipera.empresaer.dao.models.Cliente;
+import com.vipera.empresaer.dao.models.Direccion;
 import com.vipera.empresaer.dao.services.cliente.ClienteService;
-import com.vipera.empresaer.dao.services.direccion.DireccionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class ClienteCoreImpl implements ClienteCore {
     private ClienteService service;
 
     @Autowired
-    private DireccionService direccionService;
+    private DireccionCore direccionCore;
 
     @Override
     public List<Cliente> findAll() {
@@ -53,15 +54,19 @@ public class ClienteCoreImpl implements ClienteCore {
     public Cliente save(Cliente object) {
         LOGGER.info(LogUtils.coreMarker, "CORE -   ClienteCoreImpl   - INPUT - save - Saving cliente");
 
-        if(object.getDireccion().isNew()){
-            LOGGER.info(LogUtils.coreMarker, "CORE -   ClienteCoreImpl   - saving new direccion");
-            object.setDireccion(direccionService.save(object.getDireccion()));
-        }
+        Direccion direccion;
 
-        Cliente t = service.save(object);
+        if(object.getDireccion().isNew())
+            direccion = direccionCore.save(object.getDireccion());
+        else
+            direccion = direccionCore.findById(object.getDireccion().getId());
+
+        object.setDireccion(direccion);
+
+        Cliente cliente = service.save(object);
 
         LOGGER.info(LogUtils.coreMarker, "CORE -   ClienteCoreImpl   - OUTPUT - save - Returning saved cliente");
-        return t;
+        return cliente;
     }
 
     @Override

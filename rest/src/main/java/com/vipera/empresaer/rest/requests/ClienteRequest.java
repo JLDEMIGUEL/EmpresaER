@@ -1,14 +1,12 @@
 package com.vipera.empresaer.rest.requests;
 
-import com.vipera.empresaer.dao.models.Direccion;
-
 public class ClienteRequest {
 
     private Long id;
 
     private String nombre;
 
-    private Direccion direccion;
+    private DireccionRequest direccion;
 
     private String telefono;
 
@@ -29,11 +27,11 @@ public class ClienteRequest {
         this.nombre = nombre;
     }
 
-    public Direccion getDireccion() {
+    public DireccionRequest getDireccion() {
         return direccion;
     }
 
-    public void setDireccion(Direccion direccion) {
+    public void setDireccion(DireccionRequest direccion) {
         this.direccion = direccion;
     }
 

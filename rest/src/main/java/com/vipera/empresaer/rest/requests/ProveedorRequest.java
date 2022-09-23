@@ -1,10 +1,5 @@
 package com.vipera.empresaer.rest.requests;
 
-import com.vipera.empresaer.dao.models.Direccion;
-import com.vipera.empresaer.dao.models.Producto;
-
-import java.util.Set;
-
 public class ProveedorRequest {
 
     private Long id;
@@ -15,9 +10,7 @@ public class ProveedorRequest {
 
     private String telefono;
 
-    private Direccion direccion;
-
-    private Set<Producto> productos;
+    private DireccionRequest direccion;
 
     public Long getId() {
         return id;
@@ -51,19 +44,11 @@ public class ProveedorRequest {
         this.telefono = telefono;
     }
 
-    public Direccion getDireccion() {
+    public DireccionRequest getDireccion() {
         return direccion;
     }
 
-    public void setDireccion(Direccion direccion) {
+    public void setDireccion(DireccionRequest direccion) {
         this.direccion = direccion;
-    }
-
-    public Set<Producto> getProductos() {
-        return productos;
-    }
-
-    public void setProductos(Set<Producto> productos) {
-        this.productos = productos;
     }
 }

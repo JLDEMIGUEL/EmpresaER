@@ -1,9 +1,10 @@
 package com.vipera.empresaer.core.components.venta;
 
+import com.vipera.empresaer.core.components.cliente.ClienteCore;
 import com.vipera.empresaer.core.exceptions.types.RestException;
 import com.vipera.empresaer.core.utils.LogUtils;
+import com.vipera.empresaer.dao.models.Cliente;
 import com.vipera.empresaer.dao.models.Venta;
-import com.vipera.empresaer.dao.services.cliente.ClienteService;
 import com.vipera.empresaer.dao.services.venta.VentaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,7 @@ public class VentaCoreImpl implements VentaCore {
     private VentaService service;
 
     @Autowired
-    private ClienteService clienteService;
+    private ClienteCore clienteCore;
 
 
     @Override
@@ -53,15 +54,19 @@ public class VentaCoreImpl implements VentaCore {
 
         LOGGER.info(LogUtils.coreMarker, "CORE -   VentaCoreImpl   - INPUT - save - Saving Venta");
 
-        if(object.getCliente().isNew()){
-            LOGGER.info(LogUtils.coreMarker, "CORE -   VentaCoreImpl   - saving new Cliente");
-            object.setCliente(clienteService.save(object.getCliente()));
-        }
+        Cliente cliente;
 
-        Venta t = service.save(object);
+        if(object.getCliente().isNew())
+            cliente = clienteCore.save(object.getCliente());
+        else
+            cliente = clienteCore.findById(object.getCliente().getId());
+
+        object.setCliente(cliente);
+
+        Venta venta = service.save(object);
 
         LOGGER.info(LogUtils.coreMarker, "CORE -   VentaCoreImpl   - OUTPUT - save - Returning saved Venta");
-        return t;
+        return venta;
     }
 
     @Override

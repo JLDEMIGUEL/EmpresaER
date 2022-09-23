@@ -11,25 +11,31 @@ public class StringValidator {
     private static final Logger LOGGER = LoggerFactory.getLogger(StringValidator.class);
 
     //private final String regexEmail =  "^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
-    private final String regexWeb =  "[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
 
+    private final String regexBasic =  "[a-zA-Z\\s]{0,20}$";
+    private final String regexWeb =  "www.[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
     private final String regexPhone =  "[0-9]{8,10}$";
 
-    public  <T> String  validate(T string){
+    public  <T> String  validate(T value){
 
         LOGGER.info(LogUtils.restMarker, "REST -   StringValidator   - INPUT - validate - Validating");
 
-        if(string == null){
-            LOGGER.info(LogUtils.restMarker, "REST -   StringValidator   - OUTPUT - validate - Validated");
-            return null;
+        if(value == null){
+            throw new RestException("14","Value must be not null", HttpStatus.BAD_REQUEST);
         }
 
-        if( !(string.getClass()==String.class))
+        if( !(value.getClass()==String.class))
             throw new RestException("12","Value must be string", HttpStatus.BAD_REQUEST);
+
+        String string = (String) value;
+
+        if(!string.matches(regexBasic)){
+            throw new RestException("13","Value doesn't match with the expected format", HttpStatus.BAD_REQUEST);
+        }
 
         LOGGER.info(LogUtils.restMarker, "REST -   StringValidator   - OUTPUT - validate - Validated");
 
-        return (String)string;
+        return string;
     }
 
 //    public  <T> String  validateEmail(T string){
@@ -58,11 +64,10 @@ public class StringValidator {
         LOGGER.info(LogUtils.restMarker, "REST -   StringValidator   - INPUT - validateWeb - Validating");
 
         if(string == null){
-            LOGGER.info(LogUtils.restMarker, "REST -   StringValidator   - OUTPUT - validateWeb - Validated");
-            return null;
+            throw new RestException("14","Value must be not null", HttpStatus.BAD_REQUEST);
         }
 
-        String web = this.validate(string);
+        String web = (String) string;
 
         if(!web.matches(regexWeb)){
             throw new RestException("13","Web doesn't match with the expected format", HttpStatus.BAD_REQUEST);
@@ -81,8 +86,7 @@ public class StringValidator {
             LOGGER.info(LogUtils.restMarker, "REST -   StringValidator   - OUTPUT - validatePhone - Validated");
             return null;
         }
-
-        String phone = this.validate(string);
+        String phone = (String) string;
 
         if(!phone.matches(regexPhone)){
             throw new RestException("13","Phone doesn't match with the expected format", HttpStatus.BAD_REQUEST);

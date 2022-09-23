@@ -1,11 +1,5 @@
 package com.vipera.empresaer.rest.requests;
 
-import com.vipera.empresaer.dao.models.Categoria;
-import com.vipera.empresaer.dao.models.Proveedor;
-import com.vipera.empresaer.dao.models.VentaProducto;
-
-import java.util.Set;
-
 public class ProductoRequest {
 
     private Long id;
@@ -16,11 +10,9 @@ public class ProductoRequest {
 
     private Integer stock;
 
-    private Proveedor proveedor;
+    private ProveedorRequest proveedor;
 
-    private Categoria categoria;
-
-    private Set<VentaProducto> ventas;
+    private CategoriaRequest categoria;
 
 
     public Long getId() {
@@ -55,27 +47,19 @@ public class ProductoRequest {
         this.stock = stock;
     }
 
-    public Proveedor getProveedor() {
+    public ProveedorRequest getProveedor() {
         return proveedor;
     }
 
-    public void setProveedor(Proveedor proveedor) {
+    public void setProveedor(ProveedorRequest proveedor) {
         this.proveedor = proveedor;
     }
 
-    public Categoria getCategoria() {
+    public CategoriaRequest getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(Categoria categoria) {
+    public void setCategoria(CategoriaRequest categoria) {
         this.categoria = categoria;
-    }
-
-    public Set<VentaProducto> getVentas() {
-        return ventas;
-    }
-
-    public void setVentas(Set<VentaProducto> ventas) {
-        this.ventas = ventas;
     }
 }

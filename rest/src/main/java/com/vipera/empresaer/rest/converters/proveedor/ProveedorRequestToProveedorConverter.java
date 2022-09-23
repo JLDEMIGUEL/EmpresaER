@@ -1,10 +1,10 @@
 package com.vipera.empresaer.rest.converters.proveedor;
 
 import com.vipera.empresaer.dao.models.Proveedor;
+import com.vipera.empresaer.rest.converters.direccion.DireccionRequestToDireccionConverter;
 import com.vipera.empresaer.rest.requests.ProveedorRequest;
 import com.vipera.empresaer.rest.utils.LogUtils;
-import com.vipera.empresaer.rest.validators.NumberValidator;
-import com.vipera.empresaer.rest.validators.StringValidator;
+import com.vipera.empresaer.rest.validators.ProveedorValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
@@ -18,12 +18,17 @@ public class ProveedorRequestToProveedorConverter implements Converter<Proveedor
 
         LOGGER.info(LogUtils.restMarker, "REST -   ProveedorRequestToProveedorConverter   - INPUT - convert - Converting");
 
+        source= new ProveedorValidator().validate(source);
+
         Proveedor proveedor = new Proveedor();
-        proveedor.setId(new NumberValidator().validateLong(source.getId()));
-        proveedor.setNombre(new StringValidator().validate(source.getNombre()));
-        proveedor.setDireccion(source.getDireccion());
-        proveedor.setTelefono(new StringValidator().validatePhone(source.getTelefono()));
-        proveedor.setWeb(new StringValidator().validateWeb(source.getWeb()));
+        if(source.getId() != null){
+            proveedor.setId(source.getId());
+        }else {
+            proveedor.setNombre(source.getNombre());
+            proveedor.setDireccion(new DireccionRequestToDireccionConverter().convert(source.getDireccion()));
+            proveedor.setTelefono(source.getTelefono());
+            proveedor.setWeb(source.getWeb());
+        }
 
         LOGGER.info(LogUtils.restMarker, "REST -   ProveedorRequestToProveedorConverter   - OUTPUT - convert - Converted");
 

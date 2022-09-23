@@ -37,7 +37,7 @@ public class CategoriaController {
 
             LOGGER.info(LogUtils.restMarker, "REST -   CategoriaController   - OUTPUT - findAll - Returning all");
 
-            List allResponse = new ArrayList();
+            List<CategoriaResponse> allResponse = new ArrayList();
             all.forEach(categoria->{
                 allResponse.add(new CategoriaToCategoriaResponseConverter().convert(categoria));
             });
@@ -46,8 +46,6 @@ public class CategoriaController {
         }catch (RestException exception){
             return new ExceptionService().handleRestException(exception);
         }
-
-
     }
 
     @GetMapping("/categoria/{id}")

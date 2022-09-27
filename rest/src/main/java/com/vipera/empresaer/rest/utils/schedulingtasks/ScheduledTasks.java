@@ -1,4 +1,4 @@
-package com.vipera.empresaer.rest.schedulingtasks;
+package com.vipera.empresaer.rest.utils.schedulingtasks;
 
 
 import com.vipera.empresaer.core.components.cliente.ClienteCore;
@@ -9,18 +9,17 @@ import com.vipera.empresaer.rest.converters.cliente.ClienteToClienteResponseConv
 import com.vipera.empresaer.rest.requests.ClienteRequest;
 import com.vipera.empresaer.rest.requests.DireccionRequest;
 import com.vipera.empresaer.rest.responses.cliente.ClienteResponse;
-import com.vipera.empresaer.rest.utils.LogUtils;
+import com.vipera.empresaer.rest.utils.logs.LogUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-@Component
+//@Component
 public class ScheduledTasks {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ScheduledTasks.class);

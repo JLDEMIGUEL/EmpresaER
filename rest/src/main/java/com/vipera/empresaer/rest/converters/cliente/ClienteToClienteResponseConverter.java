@@ -2,7 +2,7 @@ package com.vipera.empresaer.rest.converters.cliente;
 
 import com.vipera.empresaer.dao.models.Cliente;
 import com.vipera.empresaer.rest.responses.cliente.ClienteResponse;
-import com.vipera.empresaer.rest.utils.LogUtils;
+import com.vipera.empresaer.rest.utils.logs.LogUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;

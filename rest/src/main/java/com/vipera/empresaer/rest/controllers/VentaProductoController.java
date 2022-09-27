@@ -9,7 +9,7 @@ import com.vipera.empresaer.rest.converters.ventaProducto.VentaProductoRequestTo
 import com.vipera.empresaer.rest.converters.ventaProducto.VentaProductoToVentaProductoResponseConverter;
 import com.vipera.empresaer.rest.requests.VentaProductoRequest;
 import com.vipera.empresaer.rest.responses.ventaproducto.VentaProductoResponse;
-import com.vipera.empresaer.rest.utils.LogUtils;
+import com.vipera.empresaer.rest.utils.logs.LogUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

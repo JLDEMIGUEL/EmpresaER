@@ -2,7 +2,7 @@ package com.vipera.empresaer.rest.converters.direccion;
 
 import com.vipera.empresaer.dao.models.Direccion;
 import com.vipera.empresaer.rest.requests.DireccionRequest;
-import com.vipera.empresaer.rest.utils.LogUtils;
+import com.vipera.empresaer.rest.utils.logs.LogUtils;
 import com.vipera.empresaer.rest.validators.DireccionValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

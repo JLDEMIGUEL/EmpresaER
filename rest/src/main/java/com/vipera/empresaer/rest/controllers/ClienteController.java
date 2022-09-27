@@ -13,7 +13,7 @@ import com.vipera.empresaer.rest.requests.ClienteRequest;
 import com.vipera.empresaer.rest.responses.cliente.ClienteHistorialResponse;
 import com.vipera.empresaer.rest.responses.cliente.ClienteMediaGastosResponse;
 import com.vipera.empresaer.rest.responses.cliente.ClienteResponse;
-import com.vipera.empresaer.rest.utils.LogUtils;
+import com.vipera.empresaer.rest.utils.logs.LogUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

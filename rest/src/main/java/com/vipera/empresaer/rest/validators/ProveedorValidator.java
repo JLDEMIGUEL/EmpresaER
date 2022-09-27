@@ -2,7 +2,7 @@ package com.vipera.empresaer.rest.validators;
 
 import com.vipera.empresaer.core.exceptions.types.RestException;
 import com.vipera.empresaer.rest.requests.ProveedorRequest;
-import com.vipera.empresaer.rest.utils.LogUtils;
+import com.vipera.empresaer.rest.utils.logs.LogUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

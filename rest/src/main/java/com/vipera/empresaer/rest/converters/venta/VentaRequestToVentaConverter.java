@@ -3,7 +3,7 @@ package com.vipera.empresaer.rest.converters.venta;
 import com.vipera.empresaer.dao.models.Venta;
 import com.vipera.empresaer.rest.converters.cliente.ClienteRequestToClienteConverter;
 import com.vipera.empresaer.rest.requests.VentaRequest;
-import com.vipera.empresaer.rest.utils.LogUtils;
+import com.vipera.empresaer.rest.utils.logs.LogUtils;
 import com.vipera.empresaer.rest.validators.DateValidator;
 import com.vipera.empresaer.rest.validators.VentaValidator;
 import org.slf4j.Logger;

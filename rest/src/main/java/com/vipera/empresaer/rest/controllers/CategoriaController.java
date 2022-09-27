@@ -8,7 +8,8 @@ import com.vipera.empresaer.rest.converters.categoria.CategoriaRequestToCategori
 import com.vipera.empresaer.rest.converters.categoria.CategoriaToCategoriaResponseConverter;
 import com.vipera.empresaer.rest.requests.CategoriaRequest;
 import com.vipera.empresaer.rest.responses.categoria.CategoriaResponse;
-import com.vipera.empresaer.rest.utils.LogUtils;
+import com.vipera.empresaer.rest.utils.kafka.KafkaProducer;
+import com.vipera.empresaer.rest.utils.logs.LogUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class CategoriaController {
     @Autowired
     private CategoriaCore core;
 
+    @Autowired
+    private  KafkaProducer kafkaProducer;
+
     @GetMapping("/categoria/all")
     public ResponseEntity findAll(){
 
@@ -34,6 +38,8 @@ public class CategoriaController {
             LOGGER.info(LogUtils.restMarker, "REST -   CategoriaController   - INPUT - findAll - Searching all");
 
             List<Categoria> all = core.findAll();
+
+            kafkaProducer.sendMessage(all.toString());
 
             LOGGER.info(LogUtils.restMarker, "REST -   CategoriaController   - OUTPUT - findAll - Returning all");
 

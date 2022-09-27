@@ -1,4 +1,4 @@
-package com.vipera.empresaer.rest.swagger;
+package com.vipera.empresaer.rest.utils.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

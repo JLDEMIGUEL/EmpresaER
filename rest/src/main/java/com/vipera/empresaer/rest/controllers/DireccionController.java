@@ -9,7 +9,7 @@ import com.vipera.empresaer.rest.converters.direccion.DireccionRequestToDireccio
 import com.vipera.empresaer.rest.converters.direccion.DireccionToDireccionResponseConverter;
 import com.vipera.empresaer.rest.requests.DireccionRequest;
 import com.vipera.empresaer.rest.responses.direccion.DireccionResponse;
-import com.vipera.empresaer.rest.utils.LogUtils;
+import com.vipera.empresaer.rest.utils.logs.LogUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -44,4 +44,5 @@ public class Cliente extends  NamedEntity{
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
+
 }

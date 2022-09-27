@@ -18,7 +18,6 @@ public class CategoriaServiceImpl implements CategoriaService {
     @Autowired
     private CategoriaRepository repository;
 
-
     @Override
     public List<Categoria> findAll() {
 

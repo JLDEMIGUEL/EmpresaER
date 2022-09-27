@@ -54,34 +54,42 @@ public class ClienteController {
 
     @GetMapping("/cliente/all")
     public ResponseEntity findAll(){
-        LOGGER.info(LogUtils.restMarker, "REST -   ClienteController   - INPUT - findAll - Searching all");
+        try{
+            LOGGER.info(LogUtils.restMarker, "REST -   ClienteController   - INPUT - findAll - Searching all");
 
-        List<Cliente> all = core.findAll();
+            List<Cliente> all = core.findAll();
 
-        LOGGER.info(LogUtils.restMarker, "REST -   ClienteController   - OUTPUT - findAll - Returning all");
+            LOGGER.info(LogUtils.restMarker, "REST -   ClienteController   - OUTPUT - findAll - Returning all");
 
-        List allResponse = new ArrayList<>();
-        all.forEach(cliente -> {
-            allResponse.add(new ClienteToClienteResponseConverter().convert(cliente));
-        });
+            List allResponse = new ArrayList<>();
+            all.forEach(cliente -> {
+                allResponse.add(new ClienteToClienteResponseConverter().convert(cliente));
+            });
 
-        return new ResponseEntity<>(allResponse,HttpStatus.OK);
+            return new ResponseEntity<>(allResponse,HttpStatus.OK);
+        }catch (RestException exception){
+            return new ExceptionService().handleRestException(exception);
+        }
     }
     @PostMapping("/cliente/save")
     public ResponseEntity save(@RequestBody ClienteRequest model){
-        Cliente cliente = new ClienteRequestToClienteConverter().convert(model);
+        try{
+            Cliente cliente = new ClienteRequestToClienteConverter().convert(model);
 
-        LOGGER.info(LogUtils.restMarker, "REST -   ClienteController   - INPUT - save - Saving cliente");
-        Cliente clienteSaved = core.save(cliente);
+            LOGGER.info(LogUtils.restMarker, "REST -   ClienteController   - INPUT - save - Saving cliente");
+            Cliente clienteSaved = core.save(cliente);
 
-        if (clienteSaved == null)
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            if (clienteSaved == null)
+                return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
 
-        LOGGER.info(LogUtils.restMarker, "REST -   ClienteController   - OUTPUT - save - Returning saved cliente");
+            LOGGER.info(LogUtils.restMarker, "REST -   ClienteController   - OUTPUT - save - Returning saved cliente");
 
-        ClienteResponse clienteResponse = new ClienteToClienteResponseConverter().convert(clienteSaved);
+            ClienteResponse clienteResponse = new ClienteToClienteResponseConverter().convert(clienteSaved);
 
-        return new ResponseEntity(clienteResponse,HttpStatus.OK);
+            return new ResponseEntity(clienteResponse,HttpStatus.OK);
+        }catch (RestException exception){
+            return new ExceptionService().handleRestException(exception);
+        }
     }
 
     @GetMapping("/cliente/historial/{id}")

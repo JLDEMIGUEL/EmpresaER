@@ -1,4 +1,4 @@
-package com.vipera.empresaer.rest.utils;
+package com.vipera.empresaer.rest.utils.logs;
 
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;

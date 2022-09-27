@@ -2,7 +2,7 @@ package com.vipera.empresaer.rest.converters.ventaProducto;
 
 import com.vipera.empresaer.dao.models.VentaProducto;
 import com.vipera.empresaer.rest.responses.ventaproducto.VentaProductoResponse;
-import com.vipera.empresaer.rest.utils.LogUtils;
+import com.vipera.empresaer.rest.utils.logs.LogUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;

@@ -4,7 +4,7 @@ import com.vipera.empresaer.dao.models.Producto;
 import com.vipera.empresaer.rest.converters.categoria.CategoriaRequestToCategoriaConverter;
 import com.vipera.empresaer.rest.converters.proveedor.ProveedorRequestToProveedorConverter;
 import com.vipera.empresaer.rest.requests.ProductoRequest;
-import com.vipera.empresaer.rest.utils.LogUtils;
+import com.vipera.empresaer.rest.utils.logs.LogUtils;
 import com.vipera.empresaer.rest.validators.ProductoValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

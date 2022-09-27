@@ -3,7 +3,7 @@ package com.vipera.empresaer.rest.converters.cliente;
 import com.vipera.empresaer.dao.models.Cliente;
 import com.vipera.empresaer.rest.converters.direccion.DireccionRequestToDireccionConverter;
 import com.vipera.empresaer.rest.requests.ClienteRequest;
-import com.vipera.empresaer.rest.utils.LogUtils;
+import com.vipera.empresaer.rest.utils.logs.LogUtils;
 import com.vipera.empresaer.rest.validators.ClienteValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

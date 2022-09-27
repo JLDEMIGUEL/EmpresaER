@@ -10,7 +10,7 @@ import com.vipera.empresaer.rest.converters.producto.ProductoToProductoResponseC
 import com.vipera.empresaer.rest.requests.ProductoRequest;
 import com.vipera.empresaer.rest.responses.producto.ProductoPreciosCompResponse;
 import com.vipera.empresaer.rest.responses.producto.ProductoResponse;
-import com.vipera.empresaer.rest.utils.LogUtils;
+import com.vipera.empresaer.rest.utils.logs.LogUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

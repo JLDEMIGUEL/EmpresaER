@@ -16,7 +16,6 @@ class CategoriaServiceImplTest {
     @Mock
     private CategoriaRepository repository;
 
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);

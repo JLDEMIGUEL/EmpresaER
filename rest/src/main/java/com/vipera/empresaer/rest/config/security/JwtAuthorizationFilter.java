@@ -1,4 +1,4 @@
-package com.vipera.empresaer.rest.utils.security;
+package com.vipera.empresaer.rest.config.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -24,6 +24,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthorizationFilter.class);
+
+    private final String SECRET_KEY= "SECRET_KEY";
 
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
@@ -69,7 +71,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
         if (token != null) {
             // parse the token.
-            String user = JWT.require(Algorithm.HMAC512("SECRET_KEY".getBytes()))
+            String user = JWT.require(Algorithm.HMAC512(SECRET_KEY.getBytes()))
                     .build()
                     .verify(token.replace("Bearer ", ""))
                     .getSubject();

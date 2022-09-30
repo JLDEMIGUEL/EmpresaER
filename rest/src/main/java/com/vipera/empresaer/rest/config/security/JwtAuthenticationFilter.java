@@ -1,4 +1,4 @@
-package com.vipera.empresaer.rest.utils.security;
+package com.vipera.empresaer.rest.config.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -26,6 +26,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
+
+    private final String SECRET_KEY= "SECRET_KEY";
+    private final long EXPIRATION_TIME= 900000;
 
     private AuthenticationManager authenticationManager;
 
@@ -72,8 +76,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String token = JWT.create()
                 .withSubject(((UserDetailsImpl) auth.getPrincipal()).getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10000))
-                .sign(Algorithm.HMAC512("SECRET_KEY".getBytes()));
+                .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .sign(Algorithm.HMAC512(SECRET_KEY.getBytes()));
 
         String body = ((UserDetailsImpl) auth.getPrincipal()).getUsername() + " " + token;
 

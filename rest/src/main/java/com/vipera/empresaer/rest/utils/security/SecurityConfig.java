@@ -1,5 +1,6 @@
 package com.vipera.empresaer.rest.utils.security;
 
+import com.vipera.empresaer.dao.services.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -21,7 +22,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsServiceImpl service;
-
 
 
     @Override

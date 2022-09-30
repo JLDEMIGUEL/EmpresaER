@@ -2,6 +2,11 @@ package com.vipera.empresaer.rest.utils.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.vipera.empresaer.rest.utils.logs.LogUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +22,10 @@ import java.util.ArrayList;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthorizationFilter.class);
+
+
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
     }
@@ -26,6 +35,10 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest req,
                                     HttpServletResponse res,
                                     FilterChain chain) throws IOException, ServletException {
+
+        LOGGER.info(LogUtils.restMarker, "REST -   JwtAuthorizationFilter  - doFilterInternal - Authorizing request");
+
+
         String header = req.getHeader("Authorization");
 
         if (header == null || !header.startsWith("Bearer ")) {
@@ -33,10 +46,20 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             return;
         }
 
-        UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
+        try{
+            UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        chain.doFilter(req, res);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            chain.doFilter(req, res);
+        }catch (TokenExpiredException ex){
+
+            LOGGER.error(LogUtils.restMarker, "REST -   JwtAuthorizationFilter  - doFilterInternal - Token expired");
+
+
+            res.setStatus(HttpStatus.UNAUTHORIZED.value());
+            res.getWriter().write("Token expired. Please, refresh your token");
+            res.flushBuffer();
+        }
     }
 
 
@@ -56,8 +79,9 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
             }
 
-            return null;
         }
+
+        LOGGER.error(LogUtils.restMarker, "REST -   JwtAuthorizationFilter  - getAuthentication -  Unable to get Bearer Token Authorization");
 
         return null;
     }

@@ -1,4 +1,4 @@
-package com.vipera.empresaer.rest.utils.security;
+package com.vipera.empresaer.dao.services.security;
 
 import com.vipera.empresaer.dao.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

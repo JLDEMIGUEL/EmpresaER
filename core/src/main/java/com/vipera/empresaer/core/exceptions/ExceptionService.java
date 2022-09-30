@@ -1,7 +1,6 @@
 package com.vipera.empresaer.core.exceptions;
 
 
-
 import com.vipera.empresaer.core.exceptions.types.RestException;
 import com.vipera.empresaer.core.utils.LogUtils;
 import org.slf4j.Logger;
@@ -22,5 +21,4 @@ public class ExceptionService {
         TemplateException template = new TemplateException(exception.getCode(), exception.getMessage());
         return new ResponseEntity<>(template, exception.getStatus());
     }
-
 }

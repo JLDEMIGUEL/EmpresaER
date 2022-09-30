@@ -24,8 +24,8 @@ public class AuthRequestValidator {
 
         if(auth.getUsername() != null && auth.getPassword() != null){
             StringValidator validator = new StringValidator();
-            validator.validate(auth.getUsername());
-            validator.validate(auth.getPassword());
+            validator.validateAlphaNumeric(auth.getUsername());
+            validator.validateAlphaNumeric(auth.getPassword());
         }else{
             throw new RestException("14","AuthRequest must have username and password", HttpStatus.BAD_REQUEST);
         }

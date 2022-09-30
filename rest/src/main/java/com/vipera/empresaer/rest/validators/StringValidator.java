@@ -13,6 +13,7 @@ public class StringValidator {
     //private final String regexEmail =  "^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
 
     private final String regexBasic =  "[a-zA-Z\\s]{0,20}$";
+    private final String regexAlphaNumeric =  "[a-zA-Z0-9\\s]{0,20}$";
     private final String regexWeb =  "www.[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
     private final String regexPhone =  "[0-9]{8,10}$";
 
@@ -34,6 +35,30 @@ public class StringValidator {
         }
 
         LOGGER.info(LogUtils.restMarker, "REST -   StringValidator   - OUTPUT - validate - Validated");
+
+        return string;
+    }
+
+
+
+    public  <T> String  validateAlphaNumeric(T value){
+
+        LOGGER.info(LogUtils.restMarker, "REST -   StringValidator   - INPUT - validateAlphaNumeric - Validating");
+
+        if(value == null){
+            throw new RestException("14","Value must be not null", HttpStatus.BAD_REQUEST);
+        }
+
+        if( !(value.getClass()==String.class))
+            throw new RestException("12","Value must be string", HttpStatus.BAD_REQUEST);
+
+        String string = (String) value;
+
+        if(!string.matches(regexAlphaNumeric)){
+            throw new RestException("13","Value doesn't match with the expected format", HttpStatus.BAD_REQUEST);
+        }
+
+        LOGGER.info(LogUtils.restMarker, "REST -   StringValidator   - OUTPUT - validateAlphaNumeric - Validated");
 
         return string;
     }

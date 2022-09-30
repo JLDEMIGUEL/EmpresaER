@@ -3,6 +3,7 @@ package com.vipera.empresaer.rest.controllers;
 import com.vipera.empresaer.core.components.user.UserCore;
 import com.vipera.empresaer.dao.models.User;
 import com.vipera.empresaer.rest.converters.user.AuthRequestToUserConverter;
+import com.vipera.empresaer.rest.converters.user.UserToUserResponseConverter;
 import com.vipera.empresaer.rest.requests.AuthRequest;
 import com.vipera.empresaer.rest.utils.logs.LogUtils;
 import org.slf4j.Logger;
@@ -34,7 +35,9 @@ public class AuthController {
 
         User saved = core.register(user);
 
+
+
         LOGGER.info(LogUtils.restMarker, "REST -   AuthController   - INPUT - register - User registered");
-        return new ResponseEntity(saved,HttpStatus.OK);
+        return new ResponseEntity(new UserToUserResponseConverter().convert(saved),HttpStatus.OK);
     }
 }

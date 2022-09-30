@@ -51,4 +51,9 @@ public class UserServiceImpl implements UserService {
     public void deleteById(Long id) {
 
     }
+
+    @Override
+    public Optional<User> findUserByUsername(String username) {
+        return repository.findByUsername(username);
+    }
 }

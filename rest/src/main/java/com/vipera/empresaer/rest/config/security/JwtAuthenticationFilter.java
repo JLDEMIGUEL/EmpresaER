@@ -63,6 +63,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             return authentication;
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }catch (RuntimeException e){
+            handleUserNotFound(res,e);
+            return null;
         }
     }
 
@@ -95,6 +98,20 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                               AuthenticationException failed) throws IOException, ServletException {
         LOGGER.error(LogUtils.restMarker, "REST -   JwtAuthenticationFilter   - unsuccessfulAuthentication - Error while authenticating user");
         super.unsuccessfulAuthentication(req,res,failed);
+    }
+
+    private void handleUserNotFound(HttpServletResponse res, RuntimeException e){
+        try {
+            LOGGER.error(LogUtils.restMarker, "REST -   JwtAuthenticationFilter  - handleUserNotFound - User not found");
+
+            res.getWriter().write("{ \"error\": \""+e.getMessage()+"\"}");
+            res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            res.setContentType("application/json");
+            res.setCharacterEncoding("UTF-16");
+            res.flushBuffer();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
 

@@ -58,8 +58,10 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             LOGGER.error(LogUtils.restMarker, "REST -   JwtAuthorizationFilter  - doFilterInternal - Token expired");
 
 
+            res.setContentType("application/json");
+            res.setCharacterEncoding("UTF-16");
             res.setStatus(HttpStatus.UNAUTHORIZED.value());
-            res.getWriter().write("Token expired. Please, refresh your token");
+            res.getWriter().write("{ \"error\": \"Token expired. Please, refresh your token\"}");
             res.flushBuffer();
         }
     }

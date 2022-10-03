@@ -1,17 +1,27 @@
 package com.vipera.empresaer.dao.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.Id;
 
 
-@Entity
-public class User extends BaseEntity{
+@Document("User")
+public class User{
 
+    @Id
+    private String id;
 
-    @Column
     private String username;
-    @Column
+
     private String password;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;

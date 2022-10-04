@@ -3,8 +3,8 @@ package com.vipera.empresaer.rest.config.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vipera.empresaer.core.components.security.UserDetailsImpl;
 import com.vipera.empresaer.dao.models.User;
-import com.vipera.empresaer.dao.services.security.UserDetailsImpl;
 import com.vipera.empresaer.rest.utils.logs.LogUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -63,9 +62,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             return authentication;
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }catch (RuntimeException e){
-            handleUserNotFound(res,e);
-            return null;
         }
     }
 
@@ -91,28 +87,4 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         res.getWriter().flush();
     }
-
-    @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest req,
-                                              HttpServletResponse res,
-                                              AuthenticationException failed) throws IOException, ServletException {
-        LOGGER.error(LogUtils.restMarker, "REST -   JwtAuthenticationFilter   - unsuccessfulAuthentication - Error while authenticating user");
-        super.unsuccessfulAuthentication(req,res,failed);
-    }
-
-    private void handleUserNotFound(HttpServletResponse res, RuntimeException e){
-        try {
-            LOGGER.error(LogUtils.restMarker, "REST -   JwtAuthenticationFilter  - handleUserNotFound - User not found");
-
-            res.getWriter().write("{ \"error\": \""+e.getMessage()+"\"}");
-            res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            res.setContentType("application/json");
-            res.setCharacterEncoding("UTF-16");
-            res.flushBuffer();
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-
 }

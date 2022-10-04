@@ -1,4 +1,4 @@
-package com.vipera.empresaer.dao.services.security;
+package com.vipera.empresaer.core.components.security;
 
 import com.vipera.empresaer.dao.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return new UserDetailsImpl(repository.findByUsername(username).orElseThrow(()-> new RuntimeException("User not found")));
+        return new UserDetailsImpl(repository.findByUsername(username).orElseThrow(
+                ()-> new UsernameNotFoundException("User not found")));
     }
 }

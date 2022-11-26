@@ -5,8 +5,8 @@ Java SpringFramework Project
 # Key Frameworks and Libraries
 
 * Spring, Spring MVC, Spring Data
-* MySQL db to store client, sells, suppliers...
-* MongoDB db to store Users: username and encrypted password
+* MySQL database to store client, sells, suppliers...
+* MongoDB database to store Users: username and encrypted password
 * Docker containers with MySQL and MongoDB images
 * Spring Security: user authentication and token generation/validation
 * Request validation
